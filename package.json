@@ -1,0 +1,49 @@
+{
+  "name": "darth-vader-companion",
+  "displayName": "Darth Vader Companion",
+  "description": "An animated Darth Vader companion that watches you code and drops Star Wars quotes",
+  "version": "0.2.0",
+  "publisher": "farhan",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "darth-vader",
+          "title": "Darth Vader",
+          "icon": "media/images/vaderfaceoutline.png"
+        }
+      ]
+    },
+    "views": {
+      "darth-vader": [
+        {
+          "type": "webview",
+          "id": "darthVader.companion",
+          "name": "Companion"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "darthVader.newQuote",
+        "title": "Darth Vader: Speak!"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0"
+  }
+}
