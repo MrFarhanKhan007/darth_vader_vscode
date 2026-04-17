@@ -182,6 +182,40 @@ export function getWebviewContent(
     }
     .copilot-badge.active { display:flex; }
     .copilot-dot { width:5px; height:5px; border-radius:50%; background:#9977ff; }
+
+    /* ─── RAGE MODE ─── */
+    @keyframes ragePulse {
+      0%,100% { background: transparent; }
+      50%     { background: rgba(200,0,0,0.08); }
+    }
+    @keyframes rageEye {
+      0%,100% { opacity:1; }
+      20%     { opacity:0.05; }
+      40%     { opacity:1; filter:brightness(2.5) drop-shadow(0 0 10px #ff0000); }
+      60%     { opacity:0.1; }
+      80%     { opacity:1; filter:brightness(3); }
+    }
+    @keyframes rageShake {
+      0%,100%{transform:translateX(0);}
+      10%{transform:translateX(-5px) rotate(-1deg);}
+      30%{transform:translateX(5px) rotate(1deg);}
+      50%{transform:translateX(-4px);}
+      70%{transform:translateX(4px);}
+      90%{transform:translateX(-2px);}
+    }
+    body.rage { animation: ragePulse 0.5s ease-in-out infinite; }
+    body.rage .vader-body { animation: rageShake 0.3s ease-in-out infinite; }
+    body.rage .eye-glow { animation: rageEye 0.35s ease-in-out infinite; }
+    body.rage .quote-wrap { border-left-color:#ff2200; box-shadow:0 0 14px #ff000033; }
+    .rage-badge {
+      display:none; align-items:center; gap:5px;
+      margin-top:5px; padding:3px 10px;
+      border:1px solid #ff2200; border-radius:12px;
+      font-size:10px; color:#ff4422; letter-spacing:1px;
+      animation: copilotPulse 0.5s ease-in-out infinite;
+    }
+    .rage-badge.active { display:flex; }
+    .rage-dot { width:5px; height:5px; border-radius:50%; background:#ff2200; }
   </style>
 </head>
 <body>
@@ -364,6 +398,11 @@ export function getWebviewContent(
     <span>Copilot is generating...</span>
   </div>
 
+  <div class="rage-badge" id="rageBadge">
+    <div class="rage-dot"></div>
+    <span>⚠ RAGE MODE</span>
+  </div>
+
   <div class="quote-wrap" id="quoteWrap">
     <div class="quote-text" id="quoteText"></div>
     <div class="quote-ctx"  id="quoteCtx"></div>
@@ -382,6 +421,7 @@ export function getWebviewContent(
     const saberLabel   = document.getElementById('saberLabel');
     const saberDot     = document.getElementById('saberDot');
     const copilotBadge = document.getElementById('copilotBadge');
+    const rageBadge    = document.getElementById('rageBadge');
     const themeAudio   = document.getElementById('themeAudio');
     const saberAudio   = document.getElementById('saberAudio');
 
@@ -518,6 +558,15 @@ export function getWebviewContent(
         case 'swing':      swingSaber(); break;
         case 'forceChoke': forceChoke(); showQuote(m.text, m.context); break;
         case 'copilot':    showCopilotBadge(m.active); if (m.text) showQuote(m.text, m.context); break;
+        case 'rage':
+          if (m.active) {
+            document.body.classList.add('rage');
+            rageBadge.classList.add('active');
+          } else {
+            document.body.classList.remove('rage');
+            rageBadge.classList.remove('active');
+          }
+          break;
       }
     });
 

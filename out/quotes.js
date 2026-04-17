@@ -104,6 +104,44 @@ exports.quotes = [
     // ─── COPILOT ERROR ───
     { text: "Even the AI gave up on you. That's a new personal low.", contexts: ["copilotError"] },
     { text: "The machine failed. And yet somehow you still seem surprised.", contexts: ["copilotError"] },
+    // ─── RAGE MODE (5+ errors in 30s) ───
+    { text: "Enough errors. I am done being patient with you.", contexts: ["rageError"] },
+    { text: "This is not a bug. This is a catastrophe. I am not calm.", contexts: ["rageError"] },
+    { text: "I find your lack of competence... INFURIATING.", contexts: ["rageError"] },
+    { text: "The entire Death Star has fewer critical failures than your code right now.", contexts: ["rageError"] },
+    { text: "I sense great suffering in this codebase. Most of it is mine.", contexts: ["rageError"] },
+    { text: "You have broken something that was already broken. I didn't think that was possible.", contexts: ["rageError"] },
+    { text: "The dark side has rules. Minimum standards. You are failing both.", contexts: ["rageError"] },
+    // ─── TEST PASS ───
+    { text: "Tests passed. Don't get used to it.", contexts: ["testPass"] },
+    { text: "All green. I am... marginally less disappointed.", contexts: ["testPass"] },
+    { text: "The tests pass. The code is still ugly, but they pass.", contexts: ["testPass"] },
+    { text: "Passing tests. Finally, the bare minimum.", contexts: ["testPass"] },
+    { text: "The Force barely guided you through this one.", contexts: ["testPass"] },
+    { text: "Green lights. Even a broken clock is right twice a day.", contexts: ["testPass"] },
+    // ─── TEST FAIL ───
+    { text: "Tests failed. I am not surprised. I am not even disappointed anymore.", contexts: ["testFail"] },
+    { text: "Red. All red. The tests have judged you, and so have I.", contexts: ["testFail"] },
+    { text: "Your test suite is in shambles. Much like your confidence, I imagine.", contexts: ["testFail"] },
+    { text: "FAILED. Your test coverage is almost as thin as your resolve.", contexts: ["testFail"] },
+    { text: "The tests have spoken. The verdict is: you.", contexts: ["testFail"] },
+    { text: "Failing tests is an art form. A terrible, wasteful art form.", contexts: ["testFail"] },
+    // ─── BUILD FAIL ───
+    { text: "Build failed. The Empire's compile times were never this bad.", contexts: ["buildFail"] },
+    { text: "It doesn't even build. You haven't earned the right to have runtime errors yet.", contexts: ["buildFail"] },
+    { text: "The build is broken. Much like your spirit will be once you fix it.", contexts: ["buildFail"] },
+    { text: "Build failed. I could rebuild the Death Star faster than you fix your types.", contexts: ["buildFail"] },
+    { text: "Compilation error. Even the compiler has given up on you today.", contexts: ["buildFail"] },
+    // ─── BUILD START ───
+    { text: "Building. Let's see what fresh disaster emerges.", contexts: ["buildStart"] },
+    { text: "Compiling. Brace yourself and the compiler both.", contexts: ["buildStart"] },
+    { text: "The build begins. I sense a great disturbance ahead.", contexts: ["buildStart"] },
+    { text: "Initiating build sequence. Lower your expectations accordingly.", contexts: ["buildStart"] },
+    // ─── DEBUG END ───
+    { text: "Debugging session ended. Did you find it, or just give up?", contexts: ["debugEnd"] },
+    { text: "Back from the debugger. Rested, humbled, no wiser than before.", contexts: ["debugEnd"] },
+    { text: "Done debugging. The bug is gone. Or hiding. Probably hiding.", contexts: ["debugEnd"] },
+    { text: "You've closed the debugger. The problem remains open.", contexts: ["debugEnd"] },
 ];
 function getQuoteForContext(context) {
     const matching = exports.quotes.filter(q => q.contexts.includes(context));

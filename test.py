@@ -7,7 +7,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-def addsum(a, b):
+def addsum1(a, b):
     return a + b
 
 def subtract(a, b):
@@ -24,5 +24,8 @@ def divide(a, b):
         return "Cannot divide by zero"
     return a / b
 
+def modulus(a,b):
+    return a % b
 
-
+def power(a, b):
+    return a ** b

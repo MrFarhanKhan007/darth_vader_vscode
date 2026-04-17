@@ -45,6 +45,14 @@ class DarthVaderViewProvider {
     _idleTimer;
     _lastQuoteTime = 0;
     _minQuoteInterval = 8000; // minimum ms between quotes
+    _errorTimestamps = [];
+    _rageActive = false;
+    _rageTimer;
+    _ragePollInterval;
+    _lastErrorTrack = 0;
+    _rageThreshold = 5;
+    _rageWindow = 20000; // 20s sliding window
+    _errorTrackCooldown = 3000; // min 3s between counting an error event
     constructor(_extensionUri) {
         this._extensionUri = _extensionUri;
     }
@@ -99,6 +107,12 @@ class DarthVaderViewProvider {
             copilotStart: '— Copilot is generating',
             copilotDone: '— Copilot finished',
             copilotError: '— Copilot stumbled',
+            rageError: '— RAGE MODE',
+            testPass: '— tests passed',
+            testFail: '— tests failed',
+            buildFail: '— build failed',
+            buildStart: '— build started',
+            debugEnd: '— debugging ended',
         };
         const msgType = context === 'error' ? 'forceChoke' : 'quote';
         this.sendMessage({
@@ -130,6 +144,60 @@ class DarthVaderViewProvider {
     }
     triggerSwing() {
         this.sendMessage({ type: 'swing' });
+    }
+    trackError() {
+        const now = Date.now();
+        // Debounce: VS Code fires onDidChangeDiagnostics many times per keystroke.
+        // Only count one error "event" per _errorTrackCooldown ms so a single burst
+        // of diagnostic events can't instantly fill the threshold window.
+        if (now - this._lastErrorTrack < this._errorTrackCooldown) {
+            return;
+        }
+        this._lastErrorTrack = now;
+        this._errorTimestamps = this._errorTimestamps.filter(t => now - t < this._rageWindow);
+        this._errorTimestamps.push(now);
+        if (!this._rageActive && this._errorTimestamps.length >= this._rageThreshold) {
+            this._rageActive = true;
+            this.sendMessage({ type: 'rage', active: true });
+            const quote = (0, quotes_1.getQuoteForContext)('rageError');
+            this._lastQuoteTime = Date.now();
+            this.sendMessage({ type: 'forceChoke', text: quote.text, context: '— RAGE MODE' });
+            // Auto-exit after 10s in case errors are never fully cleared
+            this._rageTimer = setTimeout(() => this._exitRage(), 10000);
+            // Poll every 500ms so we exit rage the moment errors clear,
+            // regardless of whether onDidChangeDiagnostics fires again
+            this._ragePollInterval = setInterval(() => this.checkRageClear(), 500);
+        }
+        else if (!this._rageActive) {
+            this.triggerQuote('error');
+        }
+    }
+    checkRageClear() {
+        if (!this._rageActive) {
+            return;
+        }
+        // Check ALL workspace diagnostics — exit rage only when truly zero errors remain
+        const allDiags = vscode.languages.getDiagnostics();
+        const hasErrors = allDiags.some(([, diags]) => diags.some(d => d.severity === vscode.DiagnosticSeverity.Error));
+        if (!hasErrors) {
+            this._exitRage();
+        }
+    }
+    _exitRage() {
+        if (!this._rageActive) {
+            return;
+        }
+        this._rageActive = false;
+        this._errorTimestamps = [];
+        if (this._rageTimer) {
+            clearTimeout(this._rageTimer);
+            this._rageTimer = undefined;
+        }
+        if (this._ragePollInterval) {
+            clearInterval(this._ragePollInterval);
+            this._ragePollInterval = undefined;
+        }
+        this.sendMessage({ type: 'rage', active: false });
     }
 }
 function getNonce() {
@@ -173,58 +241,68 @@ function activate(context) {
         provider.resetIdleTimer();
     }));
     // ─── On Text Change (typing detection) ───
-    let changeCounter = 0;
+    // Latency fix: replaced 50-keystroke counter with a 400ms debounce.
+    // Large deletions still fire immediately with zero latency.
+    let lastChangeText = '';
+    let typingDebounce;
     context.subscriptions.push(vscode.workspace.onDidChangeTextDocument((e) => {
         if (e.document.uri.scheme !== 'file') {
             return;
         }
         provider.resetIdleTimer();
-        changeCounter++;
-        // Every ~50 edits, maybe drop a quote
-        if (changeCounter >= 50) {
-            changeCounter = 0;
-            if (Math.random() < 0.4) {
-                // Detect context from content changes
-                const change = e.contentChanges[0];
-                if (change) {
-                    const text = change.text;
-                    if (text.includes('//') || text.includes('/*') || text.includes('#')) {
-                        provider.triggerQuote('comment');
-                    }
-                    else if (/\bfunction\b|\bconst\s+\w+\s*=\s*\(/.test(text) || /\bdef\b/.test(text)) {
-                        provider.triggerQuote('function');
-                    }
-                    else if (/\bclass\b/.test(text)) {
-                        provider.triggerQuote('class');
-                    }
-                    else if (/\bimport\b|\brequire\b|\bfrom\b/.test(text)) {
-                        provider.triggerQuote('import');
-                    }
-                    else {
-                        provider.triggerQuote('typing');
-                    }
-                }
-            }
-        }
-        // Detect large deletions
+        // Large deletions fire immediately — zero latency
         for (const change of e.contentChanges) {
             if (change.rangeLength > 50 && change.text.length === 0) {
                 provider.triggerQuote('delete');
+                return;
+            }
+        }
+        // Capture the most recent change for context detection
+        if (e.contentChanges[0]) {
+            lastChangeText = e.contentChanges[0].text;
+        }
+        // 400ms after the user pauses typing, evaluate context and maybe quote
+        if (typingDebounce) {
+            clearTimeout(typingDebounce);
+        }
+        typingDebounce = setTimeout(() => {
+            if (Math.random() < 0.28) {
+                const text = lastChangeText;
+                if (text.includes('//') || text.includes('/*') || text.includes('#')) {
+                    provider.triggerQuote('comment');
+                }
+                else if (/\bfunction\b|\bconst\s+\w+\s*=\s*\(/.test(text) || /\bdef\b/.test(text)) {
+                    provider.triggerQuote('function');
+                }
+                else if (/\bclass\b/.test(text)) {
+                    provider.triggerQuote('class');
+                }
+                else if (/\bimport\b|\brequire\b|\bfrom\b/.test(text)) {
+                    provider.triggerQuote('import');
+                }
+                else {
+                    provider.triggerQuote('typing');
+                }
+            }
+        }, 400);
+    }));
+    // ─── Diagnostics (errors + rage mode) ───
+    context.subscriptions.push(vscode.languages.onDidChangeDiagnostics((e) => {
+        let hasError = false;
+        for (const uri of e.uris) {
+            const errors = vscode.languages.getDiagnostics(uri)
+                .filter(d => d.severity === vscode.DiagnosticSeverity.Error);
+            if (errors.length > 0) {
+                hasError = true;
                 break;
             }
         }
-    }));
-    // ─── Diagnostics (errors) ───
-    context.subscriptions.push(vscode.languages.onDidChangeDiagnostics((e) => {
-        for (const uri of e.uris) {
-            const diags = vscode.languages.getDiagnostics(uri);
-            const errors = diags.filter(d => d.severity === vscode.DiagnosticSeverity.Error);
-            if (errors.length > 0) {
-                if (Math.random() < 0.5) { // don't trigger on every error event
-                    provider.triggerQuote('error');
-                }
-                break;
-            }
+        if (hasError) {
+            provider.trackError();
+        }
+        else {
+            // The changed URIs have no errors — check if ALL workspace errors cleared
+            provider.checkRageClear();
         }
     }));
     // ─── Terminal ───
@@ -236,6 +314,31 @@ function activate(context) {
     // ─── Debug ───
     context.subscriptions.push(vscode.debug.onDidStartDebugSession(() => {
         provider.triggerQuote('debug');
+    }));
+    // ─── Debug End ───
+    context.subscriptions.push(vscode.debug.onDidTerminateDebugSession(() => {
+        if (Math.random() < 0.5) {
+            provider.triggerQuote('debugEnd');
+        }
+    }));
+    // ─── Build / Test Tasks ───
+    context.subscriptions.push(vscode.tasks.onDidStartTask((e) => {
+        const name = e.execution.task.name.toLowerCase();
+        const group = e.execution.task.group;
+        if (group === vscode.TaskGroup.Build && !/test/.test(name)) {
+            provider.triggerQuote('buildStart');
+        }
+    }));
+    context.subscriptions.push(vscode.tasks.onDidEndTaskProcess((e) => {
+        const name = e.execution.task.name.toLowerCase();
+        const group = e.execution.task.group;
+        const exitCode = e.exitCode ?? 0;
+        if (group === vscode.TaskGroup.Test || /test|jest|pytest|mocha|vitest|karma/.test(name)) {
+            provider.triggerQuote(exitCode === 0 ? 'testPass' : 'testFail');
+        }
+        else if (group === vscode.TaskGroup.Build && exitCode !== 0) {
+            provider.triggerQuote('buildFail');
+        }
     }));
     // ─── Copilot Detection ───
     // Strategy: detect large multi-line insertions that are characteristic of
