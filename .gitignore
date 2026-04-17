@@ -1,4 +1,22 @@
-/.vscode
-/.vscodeignore
-/darth-vader-companion-0.1.9.vsix
-/darth-vader-companion-0.2.0.vsix
+# VS Code
+.vscode/
+
+# Compiled output
+out/
+*.js.map
+
+# Dependencies
+node_modules/
+
+# Python virtual environment
+.venv/
+
+# Packaged extensions
+*.vsix
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.vscodeignore
