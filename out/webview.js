@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getWebviewContent = getWebviewContent;
 function getWebviewContent(nonce, cspSource, media) {
-    const { themeUri, saberUri } = media;
+    const { themeUri, saberUri, breathingUri, rageUri } = media;
     return /*html*/ `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,23 +24,28 @@ function getWebviewContent(nonce, cspSource, media) {
       overflow-x: hidden; padding: 8px 10px 14px;
     }
 
-    /* ─── MUSIC TOGGLE ─── */
-    .music-toggle {
-      display: flex; align-items: center; gap: 7px;
-      margin-bottom: 8px; padding: 5px 12px;
+    /* ─── CONTROLS GRID ─── */
+    .controls-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5px; width: 100%; margin-bottom: 10px;
+    }
+    .ctrl-btn {
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      padding: 6px 8px;
       background: var(--vscode-editorWidget-background, #1e1e1e);
       border: 1px solid var(--vscode-editorWidget-border, #454545);
-      border-radius: 20px; cursor: pointer; font-size: 10.5px;
+      border-radius: 20px; cursor: pointer; font-size: 10px;
       color: var(--vscode-foreground);
       transition: border-color 0.25s, background 0.25s; user-select: none;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .music-toggle:hover { border-color: #aa0000; }
-    .music-toggle.playing { border-color: #ff0000; background: #1a0000; }
+    .ctrl-btn:hover { border-color: #aa0000; }
+    .ctrl-btn.active { border-color: #ff0000; background: #1a0000; }
     .toggle-dot {
-      width:7px; height:7px; border-radius:50%; background:#555;
-      transition: background 0.25s, box-shadow 0.25s;
+      width: 6px; height: 6px; border-radius: 50%; background: #555;
+      flex-shrink: 0; transition: background 0.25s, box-shadow 0.25s;
     }
-    .music-toggle.playing .toggle-dot { background:#ff0000; box-shadow:0 0 6px #ff0000; }
+    .ctrl-btn.active .toggle-dot { background: #ff0000; box-shadow: 0 0 5px #ff0000; }
 
     /* ─── VADER SCENE ─── */
     .vader-scene {
@@ -219,24 +224,38 @@ function getWebviewContent(nonce, cspSource, media) {
 </head>
 <body>
 
-  <!-- MUSIC TOGGLE -->
-  <div class="music-toggle" id="musicToggle">
-    <div class="toggle-dot"></div>
-    <span id="musicLabel">Imperial March &mdash; OFF</span>
+  <!-- CONTROLS: 2x2 grid -->
+  <div class="controls-grid">
+    <div class="ctrl-btn" id="musicToggle">
+      <div class="toggle-dot"></div>
+      <span id="musicLabel">🎵 Imperial March</span>
+    </div>
+    <div class="ctrl-btn" id="breathToggle">
+      <div class="toggle-dot"></div>
+      <span id="breathLabel">🌬️ Breathing</span>
+    </div>
+    <div class="ctrl-btn" id="saberToggle">
+      <div class="toggle-dot"></div>
+      <span id="saberLabel">⚔️ Saber</span>
+    </div>
+    <div class="ctrl-btn" id="rageAudioToggle">
+      <div class="toggle-dot"></div>
+      <span id="rageSoundLabel">⚠️ Rage Alarm</span>
+    </div>
   </div>
 
-  <!-- SABER BUTTON -->
-  <div class="music-toggle" id="saberToggle" style="margin-bottom:8px">
-    <div class="toggle-dot" id="saberDot"></div>
-    <span id="saberLabel">&#9876; Ignite Saber</span>
-  </div>
-
-  <!-- AUDIO: preload="auto" buffers the file the moment the panel opens -->
+  <!-- AUDIO: preload="auto" buffers all sounds when the panel opens -->
   <audio id="themeAudio" loop preload="auto">
     <source src="${themeUri}" type="audio/mpeg">
   </audio>
   <audio id="saberAudio" preload="auto">
     <source src="${saberUri}" type="audio/mpeg">
+  </audio>
+  <audio id="breathAudio" loop preload="auto">
+    <source src="${breathingUri}" type="audio/mpeg">
+  </audio>
+  <audio id="rageAudio" loop preload="auto">
+    <source src="${rageUri}" type="audio/mpeg">
   </audio>
 
   <!-- VADER SCENE -->
@@ -408,38 +427,54 @@ function getWebviewContent(nonce, cspSource, media) {
   </div>
 
   <script nonce="${nonce}">
-    const vscode       = acquireVsCodeApi();
-    const saberWrap    = document.getElementById('saberWrap');
-    const quoteWrap    = document.getElementById('quoteWrap');
-    const quoteText    = document.getElementById('quoteText');
-    const quoteCtx     = document.getElementById('quoteCtx');
-    const particlesEl  = document.getElementById('particles');
-    const musicToggle  = document.getElementById('musicToggle');
-    const musicLabel   = document.getElementById('musicLabel');
-    const saberToggle  = document.getElementById('saberToggle');
-    const saberLabel   = document.getElementById('saberLabel');
-    const saberDot     = document.getElementById('saberDot');
-    const copilotBadge = document.getElementById('copilotBadge');
-    const rageBadge    = document.getElementById('rageBadge');
-    const themeAudio   = document.getElementById('themeAudio');
-    const saberAudio   = document.getElementById('saberAudio');
+    const vscode          = acquireVsCodeApi();
+    const saberWrap       = document.getElementById('saberWrap');
+    const quoteWrap       = document.getElementById('quoteWrap');
+    const quoteText       = document.getElementById('quoteText');
+    const quoteCtx        = document.getElementById('quoteCtx');
+    const particlesEl     = document.getElementById('particles');
+    const musicToggle     = document.getElementById('musicToggle');
+    const musicLabel      = document.getElementById('musicLabel');
+    const saberToggle     = document.getElementById('saberToggle');
+    const saberLabel      = document.getElementById('saberLabel');
+    const breathToggle    = document.getElementById('breathToggle');
+    const breathLabel     = document.getElementById('breathLabel');
+    const rageAudioToggle = document.getElementById('rageAudioToggle');
+    const rageSoundLabel  = document.getElementById('rageSoundLabel');
+    const copilotBadge    = document.getElementById('copilotBadge');
+    const rageBadge       = document.getElementById('rageBadge');
+    const themeAudio      = document.getElementById('themeAudio');
+    const saberAudio      = document.getElementById('saberAudio');
+    const breathAudio     = document.getElementById('breathAudio');
+    const rageAudio       = document.getElementById('rageAudio');
 
-    themeAudio.volume = 0.45;
-    saberAudio.volume = 1.0;
+    themeAudio.volume  = 0.45;
+    saberAudio.volume  = 1.0;
+    breathAudio.volume = 0.3;
+    rageAudio.volume   = 0.7;
     themeAudio.load();
     saberAudio.load();
+    breathAudio.load();
+    rageAudio.load();
+
+    // ─── AUDIO STATE ───
+    // Both breathing and rage alarm start OFF. Saber/march also start OFF.
+    // Browser autoplay policy: play() is allowed from a user-gesture handler.
+    // For rage audio (triggered via message, not a click), we "prime" it from
+    // within the toggle click so the browser permits later programmatic play.
+    let breathEnabled    = false;
+    let rageAudioEnabled = false;
+    let rageAudioPrimed  = false; // becomes true once primed from a click
 
     // ═══ MUSIC TOGGLE ═══
     musicToggle.addEventListener('click', () => {
       if (themeAudio.paused) {
         themeAudio.play().catch(() => {});
-        musicToggle.classList.add('playing');
-        musicLabel.textContent = 'Imperial March \u2014 ON';
+        musicToggle.classList.add('active');
       } else {
         themeAudio.pause();
         themeAudio.currentTime = 0;
-        musicToggle.classList.remove('playing');
-        musicLabel.textContent = 'Imperial March \u2014 OFF';
+        musicToggle.classList.remove('active');
       }
     });
 
@@ -503,15 +538,48 @@ function getWebviewContent(nonce, cspSource, media) {
     saberToggle.addEventListener('click', () => {
       saberEnabled = !saberEnabled;
       if (saberEnabled) {
-        saberToggle.classList.add('playing');
-        saberLabel.textContent = '\u2694\ufe0f Saber Activated';
+        saberToggle.classList.add('active');
         swingSaber();
       } else {
-        saberToggle.classList.remove('playing');
-        saberLabel.textContent = '\u2694\ufe0f Ignite Saber';
-        // Stop any currently-playing saber sound immediately
+        saberToggle.classList.remove('active');
         saberAudio.pause();
         saberAudio.currentTime = 0;
+      }
+    });
+
+    // ═══ BREATHING TOGGLE ═══
+    breathToggle.addEventListener('click', () => {
+      breathEnabled = !breathEnabled;
+      if (breathEnabled) {
+        breathToggle.classList.add('active');
+        breathAudio.play().catch(() => {}); // inside click handler → always allowed
+      } else {
+        breathToggle.classList.remove('active');
+        breathAudio.pause();
+        breathAudio.currentTime = 0;
+      }
+    });
+
+    // ═══ RAGE ALARM TOGGLE ═══
+    rageAudioToggle.addEventListener('click', () => {
+      rageAudioEnabled = !rageAudioEnabled;
+      if (rageAudioEnabled) {
+        rageAudioToggle.classList.add('active');
+        // PRIME: play+immediately pause from within this click handler.
+        // This grants the browser permission to play rageAudio programmatically
+        // later (from the message handler) without a gesture.
+        rageAudio.volume = 0;
+        rageAudio.play().then(() => {
+          rageAudio.pause();
+          rageAudio.currentTime = 0;
+          rageAudio.volume = 0.7;
+          rageAudioPrimed = true;
+        }).catch(() => {});
+      } else {
+        rageAudioToggle.classList.remove('active');
+        rageAudio.pause();
+        rageAudio.currentTime = 0;
+        rageAudioPrimed = false;
       }
     });
 
@@ -561,9 +629,16 @@ function getWebviewContent(nonce, cspSource, media) {
           if (m.active) {
             document.body.classList.add('rage');
             rageBadge.classList.add('active');
+            if (rageAudioEnabled && rageAudioPrimed) {
+              rageAudio.volume = 0.7;
+              rageAudio.currentTime = 0;
+              rageAudio.play().catch(() => {});
+            }
           } else {
             document.body.classList.remove('rage');
             rageBadge.classList.remove('active');
+            rageAudio.pause();
+            rageAudio.currentTime = 0;
           }
           break;
       }

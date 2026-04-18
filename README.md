@@ -2,110 +2,138 @@
 
 > *"I find your lack of commits... disturbing."* 🌑
 
-An animated Darth Vader lives in your VS Code sidebar, watches you code, and throws arrogant Star Wars quotes at your editor events. He comes with glowing eyes, a breathing suit, an animated lightsaber, and the Imperial March.
+**Darth Vader lives in your VS Code sidebar.** He watches you code, drops arrogant Star Wars quotes on every editor event, breathes at you, ignites his lightsaber, and enters full **RAGE MODE** when your errors pile up.
 
-## Highlights ✨
+---
 
-| Event | Vader's reaction |
+## Features ✨
+
+### Reactions
+
+| Event | What Vader does |
 |---|---|
-| Opening VS Code | Welcomes you from the dark side |
+| Opening VS Code | Welcomes you to the dark side |
 | Saving a file | Judges your commit discipline |
 | Opening a file | Comments on your choices |
-| Error / diagnostic | Mocks your bugs |
+| Error / diagnostic | Mocks your bugs — or enters Rage Mode |
 | Deleting code | Taunts your refactor |
 | Creating a new file | Has opinions immediately |
-| Running tests or debug | Watches with amusement |
+| Running tests | Praises reluctantly or mocks failure |
+| Build start / fail | Notes your ambition and your failure |
+| Starting debugger | Watches your archaeological dig |
 | Opening a terminal | Notes your weakness |
-| Long file / complex function | Becomes impressed or condescending |
-| Idle for a while | Reminds you he is still there |
-| GitHub Copilot typing | Badge appears with a special quote |
-| Copilot finishes | Takes the credit |
+| Idling | Reminds you he is still watching |
+| GitHub Copilot generating | Badge appears, snark quote fires |
+| Copilot finishes | Takes all the credit |
 
 ### Animations
-- **Breathing** 🌬️ - chest slowly rises and falls
-- **Glowing red eyes** 🔴 - occasional flicker like a power fluctuation
-- **Chest armor lights** 💡 - red and blue indicators blink on independent timers
-- **Cape sway** 🖤 - subtle drift in the dark side wind
-- **Lightsaber idle** ⚔️ - slow rocking, with random swing audio every 18-40 seconds
 
-### Audio
-- **Imperial March** 🎵 - toggle button at the top of the panel, off by default
-- **Ignite Saber** 🔥 - when ON, triggers an immediate saber swing and keeps auto-swings going; when OFF, the saber still animates silently
+- 🌬️ **Breathing** — chest rises and falls, 3.5 s cycle
+- 🔴 **Glowing red eyes** — occasional power-fluctuation flicker
+- 💡 **Chest armor lights** — red and blue indicators blink on independent timers
+- 🖤 **Cape sway** — subtle drift in the dark side wind
+- ⚔️ **Lightsaber idle** — slow rocking; random audio swing every 18–40 s
+
+### 😡 Rage Mode
+
+When **5+ errors accumulate within 20 seconds**, Vader loses it:
+- Body shakes violently
+- Eyes flicker and overbrighten
+- A red pulse washes the panel
+- The Lucrehulk alarm fires (if enabled)
+- A special rage quote fires immediately
+- Rage clears the moment all errors resolve — no waiting
+
+### 🎵 Audio Controls
+
+Four independent toggles in a 2×2 grid — all **off by default**:
+
+| Button | Sound |
+|---|---|
+| 🎵 Imperial March | Looping Star Wars theme |
+| 🌬️ Breathing | Vader's iconic breathing loop |
+| ⚔️ Saber | Swing sound + auto-swings every 18–40 s |
+| ⚠️ Rage Alarm | Lucrehulk alarm plays during Rage Mode |
+
+---
 
 ## Installation 🚀
 
-Install the packaged extension from the `.vsix` file:
+### From VSIX
 
 ```bash
-code --install-extension darth-vader-companion-0.2.0.vsix --force
+code --install-extension darth-vader-companion-0.3.0.vsix --force
 ```
 
-Then reload VS Code: `Ctrl+Shift+P` → **Developer: Reload Window**. The Vader icon will appear in the Activity Bar on the left.
+Then: `Ctrl+Shift+P` → **Developer: Reload Window**
+
+The Vader helmet icon appears in the Activity Bar on the left. Click it.
+
+### From source
+
+```bash
+git clone https://github.com/your-username/darth-vader-vscode
+cd darth-vader-vscode
+npm install
+npx tsc -p ./
+echo y | npx @vscode/vsce package --allow-missing-repository
+code --install-extension darth-vader-companion-*.vsix --force
+```
+
+---
 
 ## Usage 🎮
 
-1. Click the **Vader helmet** icon in the Activity Bar.
-2. Use **Imperial March** to toggle the theme music.
-3. Use **Ignite Saber** to enable saber sound effects.
-4. Trigger events like saving files, opening terminals, or causing diagnostics to see Vader react.
+1. Click the **Vader helmet** in the Activity Bar to open the panel.
+2. Enable the sounds you want from the 2×2 control grid.
+3. Code normally — Vader reacts to what you do.
+4. Break enough things fast enough and he will enter **Rage Mode**.
+
+---
 
 ## Development 🛠️
 
 ```bash
-# Install dependencies
-npm install
-
-# Compile TypeScript
-npx tsc -p ./
-
-# Package a VSIX
-echo y | npx @vscode/vsce package --allow-missing-repository
+npm install          # install dev dependencies
+npx tsc -p ./        # compile TypeScript → out/
 ```
 
-Requires Node.js and npm. TypeScript is installed locally as a dev dependency.
+Press **F5** to open an Extension Development Host for live testing. Edit → save → `Ctrl+R` in the host window to reload.
+
+**Requires** Node.js ≥ 18 and npm.
+
+---
 
 ## Project Structure 📁
 
 ```text
 darth-vader-vscode/
 ├── src/
-│   ├── extension.ts   # Extension host, editor listeners, Copilot detection
-│   ├── webview.ts     # HTML/CSS/JS for the sidebar panel
-│   └── quotes.ts      # Quote library grouped by event context
+│   ├── extension.ts   # Extension host, editor event listeners, rage tracking
+│   ├── webview.ts     # Full HTML/CSS/JS sidebar panel (SVG Vader + audio)
+│   └── quotes.ts      # 100+ quotes grouped by context
 ├── media/
-│   ├── audio/         # Theme music and saber sound effect
-│   └── images/        # Activity Bar icon assets
-├── out/               # Generated JavaScript
+│   ├── audio/         # Imperial March, saber, breathing, rage alarm
+│   └── images/        # Activity Bar icon
+├── out/               # Compiled JS (git-ignored)
 ├── package.json
 └── tsconfig.json
 ```
 
-## What You Could Add Next 💭
+---
 
-- **Rage mode** 😡 when too many errors appear in a short time
-- **Dark Side meter** 🌘 that fills as you work longer
-- **Language-aware quotes** 🧠 for Python, TypeScript, JavaScript, and more
-- **Focus mode** ⏳ with a Pomodoro timer and Vader reminders
-- **Git blame jokes** 🧾 based on recent file history
-- **Boss fight mode** 👹 for build failures or test failures
-- **Ambient UI effects** 🌌 like a subtle background glow or hologram pulse
-- **Achievement system** 🏆 for long coding streaks or clean test runs
+## What Could Come Next 💭
 
-## Changelog 📝
+- 🌘 **Dark Side meter** — fills as errors accumulate, drains when tests pass
+- 🧠 **Language-aware quotes** — Python snark vs TypeScript lectures vs "you're using Notepad?"
+- ⏳ **Focus / Pomodoro mode** — Vader enforces your work sessions
+- 🧾 **Git blame quotes** — taunts based on your last commit message
+- 🏆 **Achievement system** — badges for clean test runs, long streaks, zero-error days
+- 🎨 **Themes** — Classic Vader, Lego Vader, Halloween Vader
+- 🔊 **More audio events** — unique sounds for test pass, build fail, debug start
+- ⚙️ **Settings panel** — configurable quote frequency, sound volume, rage threshold
 
-### v0.2.0
-- Sidebar webview provider with persistent context when hidden
-- Imperial March toggle and saber audio controls
-- Copilot detection with typing-pause and bulk-insert heuristics
-- Responsive SVG Vader figure with inline lightsaber animation
-
-### v0.1.4
-- Fixed saber audio playback conflicts
-- Improved the Activity Bar icon using a transparent SVG silhouette
-- Fully gated saber sounds behind the Ignite Saber toggle
-
-### v0.1.0
-- Initial release with animated Vader, theme music, saber sounds, quotes, and Copilot detection
+See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
 ---
 
