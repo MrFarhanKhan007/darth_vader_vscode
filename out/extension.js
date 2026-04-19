@@ -63,10 +63,10 @@ class DarthVaderViewProvider {
             localResourceRoots: [this._extensionUri],
         };
         const nonce = getNonce();
-        const themeUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'star_wars_theme.mp3')).toString();
-        const saberUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'YTDown.com_Shorts_Lightsaber-Sound-Effect-HD-How-to_Media_LJwMGsBIc-0_008_128k.mp3')).toString();
-        const breathingUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'darth_vader_breathing_sound.mp3')).toString();
-        const rageUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'lucrehulk-alarm-sound.mp3')).toString();
+        const themeUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'march_sound.mp3')).toString();
+        const saberUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'sword_sound.mp3')).toString();
+        const breathingUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'breath_sound_v2.mp3')).toString();
+        const rageUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'alarm_sound.mp3')).toString();
         const vaderImageUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'images', 'Darth-Vader-SVG-Free-Star-Wars-Vector-for-DIY-Projects.jpg')).toString();
         webviewView.webview.html = (0, webview_1.getWebviewContent)(nonce, webviewView.webview.cspSource, { themeUri, saberUri, breathingUri, rageUri, vaderImageUri });
     }
