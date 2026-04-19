@@ -1,7 +1,7 @@
 export function getWebviewContent(
   nonce: string,
   cspSource: string,
-  media: { themeUri: string; saberUri: string; breathingUri: string; rageUri: string; vaderImageUri: string }
+  media: { themeUri: string; saberUri: string; breathingUri: string; rageUri: string }
 ): string {
   const { themeUri, saberUri, breathingUri, rageUri } = media;
   return /*html*/ `<!DOCTYPE html>

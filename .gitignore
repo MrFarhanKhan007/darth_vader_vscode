@@ -18,5 +18,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 
-# Misc
-*.vscodeignore
+# Dev/test artifacts
+test.py
+media/audio/v1 sounds/

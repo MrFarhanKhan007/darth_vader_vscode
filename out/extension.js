@@ -67,8 +67,7 @@ class DarthVaderViewProvider {
         const saberUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'sword_sound.mp3')).toString();
         const breathingUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'breath_sound_v2.mp3')).toString();
         const rageUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'alarm_sound.mp3')).toString();
-        const vaderImageUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'images', 'Darth-Vader-SVG-Free-Star-Wars-Vector-for-DIY-Projects.jpg')).toString();
-        webviewView.webview.html = (0, webview_1.getWebviewContent)(nonce, webviewView.webview.cspSource, { themeUri, saberUri, breathingUri, rageUri, vaderImageUri });
+        webviewView.webview.html = (0, webview_1.getWebviewContent)(nonce, webviewView.webview.cspSource, { themeUri, saberUri, breathingUri, rageUri });
     }
     sendMessage(msg) {
         if (this._view) {

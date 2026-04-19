@@ -45,11 +45,8 @@ class DarthVaderViewProvider implements vscode.WebviewViewProvider {
     const rageUri = webviewView.webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, 'media', 'audio', 'alarm_sound.mp3')
     ).toString();
-    const vaderImageUri = webviewView.webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, 'media', 'images', 'Darth-Vader-SVG-Free-Star-Wars-Vector-for-DIY-Projects.jpg')
-    ).toString();
 
-    webviewView.webview.html = getWebviewContent(nonce, webviewView.webview.cspSource, { themeUri, saberUri, breathingUri, rageUri, vaderImageUri });
+    webviewView.webview.html = getWebviewContent(nonce, webviewView.webview.cspSource, { themeUri, saberUri, breathingUri, rageUri });
   }
 
   sendMessage(msg: { type: string; text?: string; context?: string; active?: boolean }) {
