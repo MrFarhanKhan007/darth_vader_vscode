@@ -4,6 +4,8 @@
   "description": "An animated Darth Vader companion that watches you code and drops Star Wars quotes",
   "version": "0.2.0",
   "publisher": "farhan",
+  "icon": "media/images/vaderfaceoutline.png",
+  "galleryBanner": { "color": "#0a0a0a", "theme": "dark" },
   "repository": { "type": "git", "url": "https://github.com/farhan/darth-vader-companion" },
   "engines": {
     "vscode": "^1.85.0"

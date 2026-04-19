@@ -8,7 +8,7 @@ All notable changes to **Darth Vader Companion** are documented here.
 
 ### Added
 - **Breathing audio** — Vader's iconic breathing loop, independently toggleable
-- **Rage alarm audio** — Lucrehulk alarm plays during Rage Mode, independently toggleable
+- **Rage alarm audio** — alarm sound plays during Rage Mode, independently toggleable
 - **2×2 audio control grid** — all four sounds (Imperial March, Breathing, Saber, Rage Alarm) in a clean, aligned button row replacing the old stacked pills
 - Browser autoplay priming: rage alarm is primed from within the toggle click so it reliably plays when Rage Mode fires from a VS Code event (bypasses browser autoplay restrictions)
 
