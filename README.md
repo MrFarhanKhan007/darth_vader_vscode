@@ -2,7 +2,7 @@
 
 > *"I find your lack of commits... disturbing."* 🌑
 
-**Darth Vader lives in your VS Code sidebar.** He watches you code, drops arrogant Star Wars quotes on every editor event, breathes at you, ignites his lightsaber, and enters full **RAGE MODE** when your errors pile up.
+**Darth Vader lives in your VS Code sidebar.** He watches you code, drops arrogant Star Wars quotes on every editor event, breathes at you, ignites his saber, and enters full **RAGE MODE** when your errors pile up.
 
 ---
 
@@ -32,7 +32,7 @@
 - 🔴 **Glowing red eyes** — occasional power-fluctuation flicker
 - 💡 **Chest armor lights** — red and blue indicators blink on independent timers
 - 🖤 **Cape sway** — subtle drift in the dark side wind
-- ⚔️ **Lightsaber idle** — slow rocking; random audio swing every 18–40 s
+- ⚔️ **Saber idle** — slow rocking; random audio swing every 18–40 s
 
 ### 😡 Rage Mode
 
@@ -51,7 +51,7 @@ Four independent toggles in a 2×2 grid — all **off by default**:
 | Button | Sound |
 |---|---|
 | 🎵 Dark March | Cinematic dark orchestral loop |
-| 🌬️ Breathing | Vader's iconic breathing loop |
+| 🌬️ Breathing | Lord's iconic breathing loop |
 | ⚔️ Saber | Swing sound + auto-swings every 18–40 s |
 | ⚠️ Rage Alarm | Sci-fi alarm plays during Rage Mode |
 
@@ -113,7 +113,7 @@ darth-vader-vscode/
 │   ├── webview.ts     # Full HTML/CSS/JS sidebar panel (SVG Vader + audio)
 │   └── quotes.ts      # 100+ quotes grouped by context
 ├── media/
-│   ├── audio/         # Imperial March, saber, breathing, rage alarm
+│   ├── audio/         # Dark March, saber, breathing, rage alarm
 │   └── images/        # Activity Bar icon
 ├── out/               # Compiled JS (git-ignored)
 ├── package.json
