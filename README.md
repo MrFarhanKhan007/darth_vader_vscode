@@ -143,4 +143,4 @@ See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
 ## ⚠️ Disclaimer
 
-This is a free, fan-made project created for fun. It is not affiliated with, endorsed by, or sponsored by any official franchise or rights holder.
+All audio and visual assets are either original or used under appropriate licenses. It is not affiliated with, endorsed by, or sponsored by any official franchise or rights holder.
