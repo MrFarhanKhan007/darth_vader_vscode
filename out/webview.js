@@ -228,7 +228,7 @@ function getWebviewContent(nonce, cspSource, media) {
   <div class="controls-grid">
     <div class="ctrl-btn" id="musicToggle">
       <div class="toggle-dot"></div>
-      <span id="musicLabel">🎵 Imperial March</span>
+      <span id="musicLabel">🎵 Dark March</span>
     </div>
     <div class="ctrl-btn" id="breathToggle">
       <div class="toggle-dot"></div>

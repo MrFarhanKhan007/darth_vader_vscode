@@ -40,7 +40,7 @@ When **5+ errors accumulate within 20 seconds**, Vader loses it:
 - Body shakes violently
 - Eyes flicker and overbrighten
 - A red pulse washes the panel
-- The Lucrehulk alarm fires (if enabled)
+- The rage alarm fires (if enabled)
 - A special rage quote fires immediately
 - Rage clears the moment all errors resolve — no waiting
 
@@ -50,10 +50,10 @@ Four independent toggles in a 2×2 grid — all **off by default**:
 
 | Button | Sound |
 |---|---|
-| 🎵 Imperial March | Looping Star Wars theme |
+| 🎵 Dark March | Cinematic dark orchestral loop |
 | 🌬️ Breathing | Vader's iconic breathing loop |
 | ⚔️ Saber | Swing sound + auto-swings every 18–40 s |
-| ⚠️ Rage Alarm | Lucrehulk alarm plays during Rage Mode |
+| ⚠️ Rage Alarm | Sci-fi alarm plays during Rage Mode |
 
 ---
 
@@ -138,3 +138,9 @@ See [CHANGELOG.md](CHANGELOG.md) for full version history.
 ---
 
 *May the dark side be with you.* 🖤
+
+---
+
+## ⚠️ Disclaimer
+
+This is a free, fan-made project created for fun. It is not affiliated with, endorsed by, or sponsored by any official franchise or rights holder.

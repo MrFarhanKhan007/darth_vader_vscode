@@ -9,7 +9,7 @@ All notable changes to **Darth Vader Companion** are documented here.
 ### Added
 - **Breathing audio** — Vader's iconic breathing loop, independently toggleable
 - **Rage alarm audio** — alarm sound plays during Rage Mode, independently toggleable
-- **2×2 audio control grid** — all four sounds (Imperial March, Breathing, Saber, Rage Alarm) in a clean, aligned button row replacing the old stacked pills
+- **2×2 audio control grid** — all four sounds (Dark March, Breathing, Saber, Rage Alarm) in a clean, aligned button row replacing the old stacked pills
 - Browser autoplay priming: rage alarm is primed from within the toggle click so it reliably plays when Rage Mode fires from a VS Code event (bypasses browser autoplay restrictions)
 
 ### Fixed
@@ -62,7 +62,7 @@ All notable changes to **Darth Vader Companion** are documented here.
 ### Added
 - Animated SVG Vader figure (breathing, eye glow, chest blink, cape sway, lightsaber idle)
 - Inline lightsaber in SVG with swing animation and sound effect
-- Imperial March toggle (MP3, looping)
+- Dark march toggle (MP3, looping)
 - 70+ arrogant quotes across 20 event contexts
 - Editor event listeners: save, open, text change, diagnostics, terminal, debug, idle
 - GitHub Copilot activity detection
