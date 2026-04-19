@@ -29,8 +29,3 @@ def modulus(a,b):
 
 def power(a, b):
     return a ** b
-
-hjbhjbjh hjbhjbjhb hjbjhbjhb
-hjjnj hnjhjj ghu ytfyfytf hhhjyuuyg ghghj
-
-kjj jj
