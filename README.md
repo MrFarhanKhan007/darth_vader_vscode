@@ -1,79 +1,93 @@
 # Darth Vader Companion
 
-> *"I find your lack of commits... disturbing."* 🌑
+> *"I find your lack of commits... disturbing."*
 
-**Darth Vader lives in your VS Code sidebar.** He watches you code, drops arrogant Star Wars quotes on every editor event, breathes at you, ignites his saber, and enters full **RAGE MODE** when your errors pile up.
+**Darth Vader lives in your VS Code sidebar.** He watches you code, drops arrogant Star Wars quotes on every editor event, breathes at you, ignites his lightsaber, and enters full **RAGE MODE** when your error count gets out of hand.
+
+---
+
+## Demo 🎬
+
+[https://github.com/user-attachments/assets/darth_vader_companion_demo.mp4](https://github.com/user-attachments/assets/a362f0ab-3066-45cd-9191-dbe098185c4a
+)
+
+> Click the Vader helmet in the Activity Bar → enable sounds → code normally → break enough things to summon Rage Mode.
 
 ---
 
 ## Features ✨
 
-### Reactions
-
-| Event | What Vader does |
-|---|---|
-| Opening VS Code | Welcomes you to the dark side |
-| Saving a file | Judges your commit discipline |
-| Opening a file | Comments on your choices |
-| Error / diagnostic | Mocks your bugs — or enters Rage Mode |
-| Deleting code | Taunts your refactor |
-| Creating a new file | Has opinions immediately |
-| Running tests | Praises reluctantly or mocks failure |
-| Build start / fail | Notes your ambition and your failure |
-| Starting debugger | Watches your archaeological dig |
-| Opening a terminal | Notes your weakness |
-| Idling | Reminds you he is still watching |
-| GitHub Copilot generating | Badge appears, snark quote fires |
-| Copilot finishes | Takes all the credit |
-
-### Animations
-
-- 🌬️ **Breathing** — chest rises and falls, 3.5 s cycle
-- 🔴 **Glowing red eyes** — occasional power-fluctuation flicker
-- 💡 **Chest armor lights** — red and blue indicators blink on independent timers
-- 🖤 **Cape sway** — subtle drift in the dark side wind
-- ⚔️ **Saber idle** — slow rocking; random audio swing every 18–40 s
-
 ### 😡 Rage Mode
 
-When **5+ errors accumulate within 20 seconds**, Vader loses it:
+When **5+ errors pile up within 20 seconds**, Vader snaps:
+
 - Body shakes violently
 - Eyes flicker and overbrighten
-- A red pulse washes the panel
-- The rage alarm fires (if enabled)
-- A special rage quote fires immediately
-- Rage clears the moment all errors resolve — no waiting
+- A red pulse floods the panel
+- Rage alarm fires (if enabled)
+- A special rage quote drops immediately
+- Clears **the moment** all errors resolve — no timer, instant
 
-### 🎵 Audio Controls
+### 🎵 Four Independent Audio Controls
 
-Four independent toggles in a 2×2 grid — all **off by default**:
+All **off by default** — turn on what you want:
 
 | Button | Sound |
 |---|---|
 | 🎵 Dark March | Cinematic dark orchestral loop |
-| 🌬️ Breathing | Lord's iconic breathing loop |
-| ⚔️ Saber | Swing sound + auto-swings every 18–40 s |
-| ⚠️ Rage Alarm | Sci-fi alarm plays during Rage Mode |
+| 🌬️ Breathing | The iconic breathing loop |
+| ⚔️ Saber | Swing on click + random auto-swings every 18–40 s |
+| ⚠️ Rage Alarm | Sci-fi alarm plays during Rage Mode only |
+
+### 🗣️ Quote Reactions
+
+Vader reacts to **everything**:
+
+| Event | What he does |
+|---|---|
+| Opening VS Code | Welcomes you to the dark side |
+| Saving a file | Judges your commit discipline |
+| Code errors | Mocks your bugs — or snaps into Rage Mode |
+| Deleting code | Taunts your refactor |
+| Running tests | Grudging praise or immediate mockery |
+| Build fail | Notes your ambition, then your failure |
+| GitHub Copilot generating | Badge pulses, snark quote fires |
+| Idling 60 s | Reminds you he is still watching |
+| …and 15 more | Save, open, terminal, debug, import, comment… |
+
+### 🎭 Animations
+
+- 🌬️ **Breathing** — chest rises and falls every 3.5 s
+- 🔴 **Red eyes** — occasional power-fluctuation flicker
+- 💡 **Chest armor** — red and blue lights blink on independent timers
+- 🖤 **Cape** — subtle drift in the dark side wind
+- ⚔️ **Saber** — slow idle rock; random swing audio
 
 ---
 
 ## Installation 🚀
 
+### From VS Code Marketplace
+
+Search for **Darth Vader Companion** in the Extensions panel, or:
+
+```
+ext install mrfarhankhan007.darth-vader-companion
+```
+
 ### From VSIX
 
 ```bash
-code --install-extension darth-vader-companion-0.3.0.vsix --force
+code --install-extension mrfarhankhan007.darth-vader-companion-0.2.0.vsix --force
 ```
 
-Then: `Ctrl+Shift+P` → **Developer: Reload Window**
-
-The Vader helmet icon appears in the Activity Bar on the left. Click it.
+Then `Ctrl+Shift+P` → **Developer: Reload Window**
 
 ### From source
 
 ```bash
-git clone https://github.com/your-username/darth-vader-vscode
-cd darth-vader-vscode
+git clone https://github.com/MrFarhanKhan007/darth_vader_vscode
+cd darth_vader_vscode
 npm install
 npx tsc -p ./
 echo y | npx @vscode/vsce package --allow-missing-repository
@@ -84,63 +98,59 @@ code --install-extension darth-vader-companion-*.vsix --force
 
 ## Usage 🎮
 
-1. Click the **Vader helmet** in the Activity Bar to open the panel.
-2. Enable the sounds you want from the 2×2 control grid.
-3. Code normally — Vader reacts to what you do.
-4. Break enough things fast enough and he will enter **Rage Mode**.
+1. Click the **Vader helmet icon** in the Activity Bar (left sidebar).
+2. Toggle the sounds you want using the 2×2 control grid.
+3. Code normally — Vader reacts automatically.
+4. Accumulate enough errors fast enough to trigger **Rage Mode**.
 
 ---
 
 ## Development 🛠️
 
 ```bash
-npm install          # install dev dependencies
-npx tsc -p ./        # compile TypeScript → out/
+npm install      # install dev dependencies
+npx tsc -p ./    # compile TypeScript → out/
 ```
 
-Press **F5** to open an Extension Development Host for live testing. Edit → save → `Ctrl+R` in the host window to reload.
-
-**Requires** Node.js ≥ 18 and npm.
+Press **F5** to launch an Extension Development Host. Edit → save → `Ctrl+R` in the host window to reload instantly.
 
 ---
 
 ## Project Structure 📁
 
-```text
+```
 darth-vader-vscode/
 ├── src/
-│   ├── extension.ts   # Extension host, editor event listeners, rage tracking
-│   ├── webview.ts     # Full HTML/CSS/JS sidebar panel (SVG Vader + audio)
-│   └── quotes.ts      # 100+ quotes grouped by context
+│   ├── extension.ts   # Extension host, event listeners, rage tracking
+│   ├── webview.ts     # Sidebar panel — SVG Vader, audio, animations
+│   └── quotes.ts      # 100+ original quotes across 20 contexts
 ├── media/
 │   ├── audio/         # Dark March, saber, breathing, rage alarm
+│   ├── demo/          # Demo video
 │   └── images/        # Activity Bar icon
-├── out/               # Compiled JS (git-ignored)
-├── package.json
-└── tsconfig.json
+└── package.json
 ```
 
 ---
 
 ## What Could Come Next 💭
 
-- 🌘 **Dark Side meter** — fills as errors accumulate, drains when tests pass
-- 🧠 **Language-aware quotes** — Python snark vs TypeScript lectures vs "you're using Notepad?"
-- ⏳ **Focus / Pomodoro mode** — Vader enforces your work sessions
-- 🧾 **Git blame quotes** — taunts based on your last commit message
-- 🏆 **Achievement system** — badges for clean test runs, long streaks, zero-error days
+- 🌘 **Dark Side meter** — fills with errors, drains when tests pass
+- 🧠 **Language-aware quotes** — Python snark vs TypeScript lectures
+- ⏳ **Pomodoro mode** — Vader enforces your work sessions
+- 🧾 **Git blame quotes** — based on your last commit message
+- 🏆 **Achievement system** — badges for clean builds and zero-error streaks
 - 🎨 **Themes** — Classic Vader, Lego Vader, Halloween Vader
-- 🔊 **More audio events** — unique sounds for test pass, build fail, debug start
-- ⚙️ **Settings panel** — configurable quote frequency, sound volume, rage threshold
-
-See [CHANGELOG.md](CHANGELOG.md) for full version history.
+- ⚙️ **Settings panel** — configurable quote frequency, volume, rage threshold
 
 ---
 
 *May the dark side be with you.* 🖤
 
+See [CHANGELOG.md](CHANGELOG.md) for version history.
+
 ---
 
 ## ⚠️ Disclaimer
 
-All audio and visual assets are either original or used under appropriate licenses. It is not affiliated with, endorsed by, or sponsored by any official franchise or rights holder.
+All audio and visual assets are either original or sourced under appropriate licenses. This extension is not affiliated with, endorsed by, or sponsored by any official franchise or rights holder.
