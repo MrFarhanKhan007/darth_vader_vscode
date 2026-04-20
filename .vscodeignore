@@ -8,6 +8,3 @@ test.py
 **/*.map
 .gitignore
 package-lock.json
-media/audio/v1 sounds/**
-media/images/*.jpg
-media/images/*.svg
